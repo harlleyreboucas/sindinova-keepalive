@@ -1,0 +1,14 @@
+name: Manter Supabase ativo
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -s -o /dev/null -w "Status: %{http_code}\n" \
+            "https://thvmevgwcagwuopvoxum.supabase.co/rest/v1/filiados?select=id&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRodm1ldmd3Y2Fnd3VvcHZveHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMTg4NDMsImV4cCI6MjEwNzU5NDg0M30.MNFN5fyoz9XHYmUNPU9ya8u5PdXJvY3g-maKqQB9A5c" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRodm1ldmd3Y2Fnd3VvcHZveHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMTg4NDMsImV4cCI6MjEwNzU5NDg0M30.MNFN5fyoz9XHYmUNPU9ya8u5PdXJvY3g-maKqQB9A5c"
