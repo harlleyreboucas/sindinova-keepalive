@@ -1,0 +1,451 @@
+<!-- =====================================================================
+  PAINEL DO ADMINISTRADOR - FILIADOS
+  Cole este código inteiro em uma PÁGINA do Blogger (modo "Visualização HTML").
+  Edite apenas as duas constantes SUPABASE_URL e SUPABASE_ANON_KEY no final.
+====================================================================== -->
+<div id="sa-root">
+<style>
+#sa-root{--ink:#14213d;--mist:#eef1f6;--line:#d3d9e4;--red:#b3122b;--ok:#17703f;--mute:#5b6677;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.45;max-width:100%;box-sizing:border-box}
+#sa-root *{box-sizing:border-box}
+#sa-root [hidden]{display:none!important}
+#sa-root h2{margin:0 0 4px;font-size:1.5rem;font-weight:700;letter-spacing:-.01em}
+#sa-root p{margin:0}
+#sa-root .sa-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px}
+#sa-root .sa-login{max-width:380px;margin:0 auto}
+#sa-root label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 4px}
+#sa-root input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:4px;font:inherit;background:#fff;color:var(--ink);margin:0}
+#sa-root input:focus,#sa-root button:focus-visible{outline:3px solid #8fa8dd;outline-offset:1px}
+#sa-root button{font:inherit;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:10px 16px;border-radius:4px;font-weight:600}
+#sa-root button:hover{background:#0c1530}
+#sa-root button.sa-sec{background:#fff;color:var(--ink);border-color:var(--line)}
+#sa-root button.sa-sec:hover{background:var(--mist)}
+#sa-root button.sa-danger{background:#fff;color:var(--red);border-color:#e3b3bb}
+#sa-root button.sa-danger:hover{background:#fbeaed}
+#sa-root button:disabled{opacity:.6;cursor:wait}
+#sa-root .sa-full{width:100%;margin-top:20px}
+#sa-root .sa-msg{margin-top:14px;font-size:.9rem;padding:10px 12px;border-radius:4px}
+#sa-root .sa-msg.err{background:#fbeaed;color:#7d0c1e}
+#sa-root .sa-msg.ok{background:#e4f4ea;color:var(--ok)}
+#sa-root .sa-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+#sa-root .sa-who{font-size:.85rem;color:var(--mute)}
+#sa-root .sa-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+#sa-root .sa-bar input{flex:1 1 220px;width:auto}
+#sa-root .sa-count{font-size:.85rem;color:var(--mute);margin-bottom:8px}
+#sa-root .sa-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+#sa-root table{width:100%;border-collapse:collapse;min-width:980px;margin:0;background:#fff}
+#sa-root th{background:var(--mist);text-align:left;font-size:.82rem;padding:10px 12px;border:0;border-bottom:1px solid var(--line);white-space:nowrap}
+#sa-root td{padding:10px 12px;border:0;border-bottom:1px solid var(--mist);font-size:.92rem;vertical-align:middle}
+#sa-root tr:last-child td{border-bottom:0}
+#sa-root td.sa-acts{white-space:nowrap;text-align:right}
+#sa-root td.sa-acts button{padding:5px 10px;font-size:.82rem;margin-left:6px}
+#sa-root .sa-empty{padding:28px;text-align:center;color:var(--mute)}
+#sa-root .sa-modal{position:fixed;inset:0;background:rgba(20,33,61,.55);display:flex;align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto;z-index:99999}
+#sa-root .sa-modal .sa-card{width:100%;max-width:480px;margin-top:4vh}
+#sa-root .sa-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){#sa-root .sa-row{grid-template-columns:1fr}}
+#sa-root textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:4px;font:inherit;background:#fff;color:var(--ink);margin:0;min-height:64px;resize:vertical}
+#sa-root textarea:focus{outline:3px solid #8fa8dd;outline-offset:1px}
+#sa-root td.sa-end{max-width:220px;white-space:normal;font-size:.86rem}
+#sa-root .sa-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}
+#sa-root .sa-senha-linha{display:flex;gap:8px}
+#sa-root .sa-senha-linha input{flex:1;font-family:ui-monospace,"Courier New",monospace;letter-spacing:.04em}
+#sa-root .sa-senha-linha button{white-space:nowrap;padding:8px 12px;font-size:.85rem}
+#sa-root .sa-dica{font-size:.85rem;color:var(--mute);margin-top:6px}
+</style>
+
+<!-- LOGIN -->
+<section id="sa-login" class="sa-card sa-login">
+  <h2>Área do administrador</h2>
+  <p class="sa-who">Entre com sua conta de administrador.</p>
+  <label for="sa-email">E-mail</label>
+  <input id="sa-email" type="email" autocomplete="username">
+  <label for="sa-senha">Senha</label>
+  <input id="sa-senha" type="password" autocomplete="current-password">
+  <button id="sa-entrar" class="sa-full" type="button">Entrar</button>
+  <div id="sa-login-msg" class="sa-msg err" hidden></div>
+</section>
+
+<!-- PAINEL -->
+<section id="sa-app" hidden>
+  <div class="sa-top">
+    <div>
+      <h2>Filiados</h2>
+      <p class="sa-who" id="sa-quem"></p>
+    </div>
+    <button id="sa-sair" class="sa-sec" type="button">Sair</button>
+  </div>
+
+  <div class="sa-bar">
+    <input id="sa-busca" type="search" placeholder="Buscar por nome, CPF, e-mail, telefone ou endereço" aria-label="Buscar filiado">
+    <button id="sa-novo" type="button">Novo filiado</button>
+  </div>
+  <div id="sa-app-msg" class="sa-msg" hidden></div>
+  <p class="sa-count" id="sa-contagem"></p>
+
+  <div class="sa-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Nome completo</th><th>CPF</th><th>Nascimento</th><th>Filiado desde</th><th>E-mail</th><th>Telefone</th><th>Endereço</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="sa-corpo"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FORMULÁRIO (criar/editar) -->
+<div id="sa-modal" class="sa-modal" hidden>
+  <div class="sa-card" role="dialog" aria-modal="true" aria-labelledby="sa-modal-titulo">
+    <h2 id="sa-modal-titulo">Novo filiado</h2>
+    <label for="sa-f-nome">Nome completo</label>
+    <input id="sa-f-nome" type="text" autocomplete="off">
+    <div class="sa-row">
+      <div>
+        <label for="sa-f-cpf">CPF</label>
+        <input id="sa-f-cpf" type="text" inputmode="numeric" placeholder="000.000.000-00" maxlength="14" autocomplete="off">
+      </div>
+      <div>
+        <label for="sa-f-nasc">Data de nascimento</label>
+        <input id="sa-f-nasc" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10" autocomplete="off">
+      </div>
+    </div>
+    <div class="sa-row">
+      <div>
+        <label for="sa-f-desde">Filiado desde</label>
+        <input id="sa-f-desde" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10" autocomplete="off">
+      </div>
+      <div>
+        <label for="sa-f-email">E-mail (usado no login)</label>
+        <input id="sa-f-email" type="email" autocomplete="off">
+      </div>
+    </div>
+    <label for="sa-f-tel">Telefone de contato</label>
+    <input id="sa-f-tel" type="text" inputmode="numeric" placeholder="(00) 00000-0000" maxlength="15" autocomplete="off">
+    <label for="sa-f-end">Endereço</label>
+    <textarea id="sa-f-end" placeholder="Rua, número, bairro, cidade - UF, CEP" autocomplete="off"></textarea>
+    <div id="sa-modal-msg" class="sa-msg err" hidden></div>
+    <div class="sa-btns">
+      <button id="sa-cancelar" class="sa-sec" type="button">Cancelar</button>
+      <button id="sa-salvar" type="button">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- DEFINIR SENHA DO FILIADO -->
+<div id="sa-modal-senha" class="sa-modal" hidden>
+  <div class="sa-card" role="dialog" aria-modal="true" aria-labelledby="sa-senha-titulo">
+    <h2 id="sa-senha-titulo">Definir senha</h2>
+    <p class="sa-who" id="sa-senha-quem"></p>
+    <label for="sa-senha-nova">Nova senha (mínimo 8 caracteres)</label>
+    <div class="sa-senha-linha">
+      <input id="sa-senha-nova" type="text" autocomplete="off" spellcheck="false">
+      <button id="sa-senha-gerar" class="sa-sec" type="button">Gerar</button>
+    </div>
+    <p class="sa-dica">Se o filiado ainda não tiver acesso, ele será criado com esta senha, sem envio de e-mail. Passe a senha ao filiado por um canal seguro.</p>
+    <div id="sa-senha-msg" class="sa-msg err" hidden></div>
+    <div class="sa-btns">
+      <button id="sa-senha-fechar" class="sa-sec" type="button">Fechar</button>
+      <button id="sa-senha-salvar" type="button">Salvar senha</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  // ====== CONFIGURE AQUI (Supabase > Project Settings > API) ======
+  var SUPABASE_URL = "https://thvmevgwcagwuopvoxum.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRodm1ldmd3Y2Fnd3VvcHZveHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMTg4NDMsImV4cCI6MjEwNzU5NDg0M30.MNFN5fyoz9XHYmUNPU9ya8u5PdXJvY3g-maKqQB9A5c";
+  // (use somente a chave "anon / public". NUNCA a "service_role")
+  // =================================================================
+
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var $ = function (id) { return document.getElementById(id); };
+  var lista = [];
+  var editandoId = null;
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function soDigitos(s) { return String(s || "").replace(/\D/g, ""); }
+  function fmtCPF(s) {
+    var d = soDigitos(s).slice(0, 11);
+    return d.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  }
+  // AAAA-MM-DD (banco) -> dd/mm/aaaa (tela)
+  function fmtData(iso) {
+    if (!iso) return "";
+    var p = iso.split("-");
+    return p[2] + "/" + p[1] + "/" + p[0];
+  }
+  // máscara enquanto digita: dd/mm/aaaa
+  // telefone: só números no banco -> (69) 99999-8888 na tela
+  function fmtTel(s) {
+    var d = soDigitos(s).slice(0, 11);
+    if (!d) return "";
+    if (d.length <= 2) return "(" + d;
+    if (d.length <= 6) return "(" + d.slice(0, 2) + ") " + d.slice(2);
+    if (d.length <= 10) return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6);
+    return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+  }
+  function mascaraData(s) {
+    var d = soDigitos(s).slice(0, 8);
+    if (d.length > 4) return d.slice(0, 2) + "/" + d.slice(2, 4) + "/" + d.slice(4);
+    if (d.length > 2) return d.slice(0, 2) + "/" + d.slice(2);
+    return d;
+  }
+  // dd/mm/aaaa (tela) -> AAAA-MM-DD (banco); devolve "" se a data não existir
+  function paraISO(br) {
+    var m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(br || "").trim());
+    if (!m) return "";
+    var dia = Number(m[1]), mes = Number(m[2]), ano = Number(m[3]);
+    var dt = new Date(ano, mes - 1, dia);
+    if (dt.getFullYear() !== ano || dt.getMonth() !== mes - 1 || dt.getDate() !== dia) return "";
+    if (ano < 1900 || dt > new Date()) return "";
+    return m[3] + "-" + m[2] + "-" + m[1];
+  }
+  function cpfValido(cpf) {
+    cpf = soDigitos(cpf);
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+    for (var t = 9; t < 11; t++) {
+      var soma = 0;
+      for (var i = 0; i < t; i++) soma += Number(cpf[i]) * (t + 1 - i);
+      var dv = ((soma * 10) % 11) % 10;
+      if (dv !== Number(cpf[t])) return false;
+    }
+    return true;
+  }
+  function mostrar(el, texto, tipo) {
+    el.textContent = texto;
+    el.className = "sa-msg " + (tipo || "err");
+    el.hidden = !texto;
+  }
+
+  // ---------- Sessão ----------
+  async function verificarAdmin(session) {
+    var r = await sb.from("admins").select("user_id").maybeSingle();
+    if (r.error || !r.data) {
+      await sb.auth.signOut();
+      mostrar($("sa-login-msg"), "Esta conta não tem permissão de administrador.");
+      return;
+    }
+    $("sa-quem").textContent = "Conectado como " + session.user.email;
+    $("sa-login").hidden = true;
+    $("sa-app").hidden = false;
+    carregar();
+  }
+
+  async function entrar() {
+    var btn = $("sa-entrar");
+    mostrar($("sa-login-msg"), "");
+    btn.disabled = true;
+    var r = await sb.auth.signInWithPassword({
+      email: $("sa-email").value.trim(),
+      password: $("sa-senha").value
+    });
+    btn.disabled = false;
+    if (r.error) {
+      mostrar($("sa-login-msg"), "E-mail ou senha incorretos.");
+      return;
+    }
+    $("sa-senha").value = "";
+    verificarAdmin(r.data.session);
+  }
+
+  async function sair() {
+    await sb.auth.signOut();
+    lista = [];
+    $("sa-app").hidden = true;
+    $("sa-login").hidden = false;
+  }
+
+  // ---------- Dados ----------
+  async function carregar() {
+    var r = await sb.from("filiados").select("*").order("nome_completo", { ascending: true });
+    if (r.error) {
+      mostrar($("sa-app-msg"), "Não foi possível carregar os filiados: " + r.error.message);
+      return;
+    }
+    lista = r.data;
+    desenhar();
+  }
+
+  function desenhar() {
+    var q = $("sa-busca").value.trim().toLowerCase();
+    var qd = soDigitos(q);
+    var itens = lista.filter(function (f) {
+      if (!q) return true;
+      return f.nome_completo.toLowerCase().indexOf(q) > -1 ||
+             f.email.toLowerCase().indexOf(q) > -1 ||
+             (f.endereco || "").toLowerCase().indexOf(q) > -1 ||
+             (qd && (f.cpf.indexOf(qd) > -1 || (f.telefone || "").indexOf(qd) > -1));
+    });
+    $("sa-contagem").textContent = itens.length + " de " + lista.length + " filiados";
+    if (!itens.length) {
+      $("sa-corpo").innerHTML = '<tr><td colspan="8" class="sa-empty">' +
+        (lista.length ? "Nenhum filiado encontrado para essa busca." : "Nenhum filiado cadastrado ainda. Clique em “Novo filiado”.") +
+        "</td></tr>";
+      return;
+    }
+    $("sa-corpo").innerHTML = itens.map(function (f) {
+      return "<tr>" +
+        "<td>" + esc(f.nome_completo) + "</td>" +
+        "<td>" + esc(fmtCPF(f.cpf)) + "</td>" +
+        "<td>" + esc(fmtData(f.data_nascimento)) + "</td>" +
+        "<td>" + esc(fmtData(f.filiado_desde)) + "</td>" +
+        "<td>" + esc(f.email) + "</td>" +
+        '<td style="white-space:nowrap">' + esc(fmtTel(f.telefone)) + "</td>" +
+        '<td class="sa-end">' + esc(f.endereco || "") + "</td>" +
+        '<td class="sa-acts">' +
+          '<button class="sa-sec" data-acao="editar" data-id="' + esc(f.id) + '" type="button">Editar</button>' +
+          '<button class="sa-sec" data-acao="senha" data-id="' + esc(f.id) + '" type="button">Senha</button>' +
+          '<button class="sa-danger" data-acao="excluir" data-id="' + esc(f.id) + '" type="button">Excluir</button>' +
+        "</td></tr>";
+    }).join("");
+  }
+
+  // ---------- Formulário ----------
+  function abrirForm(f) {
+    editandoId = f ? f.id : null;
+    $("sa-modal-titulo").textContent = f ? "Editar filiado" : "Novo filiado";
+    $("sa-f-nome").value = f ? f.nome_completo : "";
+    $("sa-f-cpf").value = f ? fmtCPF(f.cpf) : "";
+    $("sa-f-nasc").value = f ? fmtData(f.data_nascimento) : "";
+    $("sa-f-desde").value = f ? fmtData(f.filiado_desde) : "";
+    $("sa-f-email").value = f ? f.email : "";
+    $("sa-f-tel").value = f ? fmtTel(f.telefone) : "";
+    $("sa-f-end").value = f ? (f.endereco || "") : "";
+    mostrar($("sa-modal-msg"), "");
+    $("sa-modal").hidden = false;
+    $("sa-f-nome").focus();
+  }
+  function fecharForm() { $("sa-modal").hidden = true; }
+
+  async function salvar() {
+    var dados = {
+      nome_completo: $("sa-f-nome").value.trim(),
+      cpf: soDigitos($("sa-f-cpf").value),
+      data_nascimento: paraISO($("sa-f-nasc").value),
+      filiado_desde: paraISO($("sa-f-desde").value),
+      email: $("sa-f-email").value.trim().toLowerCase(),
+      telefone: soDigitos($("sa-f-tel").value) || null,
+      endereco: $("sa-f-end").value.trim().replace(/\s+/g, " ") || null
+    };
+    var msg = $("sa-modal-msg");
+    if (!dados.nome_completo) return mostrar(msg, "Informe o nome completo.");
+    if (!cpfValido(dados.cpf)) return mostrar(msg, "CPF inválido. Confira os números.");
+    if (!dados.data_nascimento) return mostrar(msg, "Data de nascimento inválida. Use o formato dd/mm/aaaa.");
+    if (!dados.filiado_desde) return mostrar(msg, "Data de filiação inválida. Use o formato dd/mm/aaaa.");
+    if (dados.filiado_desde < dados.data_nascimento) return mostrar(msg, "A data de filiação não pode ser anterior ao nascimento.");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(dados.email)) return mostrar(msg, "Informe um e-mail válido.");
+    if (dados.telefone && !/^\d{10,11}$/.test(dados.telefone)) return mostrar(msg, "Telefone inválido. Use DDD + número, ex.: (69) 99999-8888.");
+
+    var btn = $("sa-salvar");
+    btn.disabled = true;
+    var r = editandoId
+      ? await sb.from("filiados").update(dados).eq("id", editandoId)
+      : await sb.from("filiados").insert(dados);
+    btn.disabled = false;
+
+    if (r.error) {
+      if (r.error.code === "23505") {
+        return mostrar(msg, "Já existe um filiado com este CPF ou e-mail.");
+      }
+      return mostrar(msg, "Não foi possível salvar: " + r.error.message);
+    }
+    fecharForm();
+    mostrar($("sa-app-msg"), editandoId ? "Filiado atualizado." : "Filiado cadastrado.", "ok");
+    carregar();
+  }
+
+  // ---------- Definir senha do filiado ----------
+  var senhaFiliado = null;
+  function gerarSenha() {
+    var c = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+    var a = new Uint32Array(10), s = "";
+    window.crypto.getRandomValues(a);
+    for (var i = 0; i < a.length; i++) s += c[a[i] % c.length];
+    return s;
+  }
+  function abrirSenha(f) {
+    if (!f) return;
+    senhaFiliado = f;
+    $("sa-senha-quem").textContent = f.nome_completo + " — " + f.email;
+    $("sa-senha-nova").value = gerarSenha();
+    $("sa-senha-salvar").disabled = false;
+    mostrar($("sa-senha-msg"), "");
+    $("sa-modal-senha").hidden = false;
+    $("sa-senha-nova").focus();
+    $("sa-senha-nova").select();
+  }
+  function fecharSenha() { $("sa-modal-senha").hidden = true; senhaFiliado = null; }
+
+  async function salvarSenha() {
+    var senha = $("sa-senha-nova").value;
+    var msg = $("sa-senha-msg");
+    if (senha.length < 8) return mostrar(msg, "A senha precisa ter pelo menos 8 caracteres.");
+    var btn = $("sa-senha-salvar");
+    btn.disabled = true;
+    var r = await sb.rpc("admin_definir_senha", { p_email: senhaFiliado.email, p_senha: senha });
+    btn.disabled = false;
+    if (r.error) return mostrar(msg, "Não foi possível salvar: " + r.error.message);
+    mostrar(msg, (r.data === "criada"
+      ? "Acesso criado. O filiado já pode entrar com o e-mail " + senhaFiliado.email + " e a senha: "
+      : "Senha alterada. A nova senha é: ") + senha, "ok");
+  }
+
+  async function excluir(id) {
+    var f = lista.filter(function (x) { return x.id === id; })[0];
+    if (!f) return;
+    if (!window.confirm("Excluir " + f.nome_completo + "? Esta ação não pode ser desfeita.")) return;
+    var r = await sb.from("filiados").delete().eq("id", id);
+    if (r.error) return mostrar($("sa-app-msg"), "Não foi possível excluir: " + r.error.message);
+    mostrar($("sa-app-msg"), "Filiado excluído.", "ok");
+    carregar();
+  }
+
+  // ---------- Eventos ----------
+  $("sa-entrar").addEventListener("click", entrar);
+  $("sa-senha").addEventListener("keydown", function (e) { if (e.key === "Enter") entrar(); });
+  $("sa-sair").addEventListener("click", sair);
+  $("sa-novo").addEventListener("click", function () { abrirForm(null); });
+  $("sa-cancelar").addEventListener("click", fecharForm);
+  $("sa-salvar").addEventListener("click", salvar);
+  $("sa-busca").addEventListener("input", desenhar);
+  $("sa-f-cpf").addEventListener("input", function (e) { e.target.value = fmtCPF(e.target.value); });
+  $("sa-f-tel").addEventListener("input", function (e) { e.target.value = fmtTel(e.target.value); });
+  $("sa-f-nasc").addEventListener("input", function (e) { e.target.value = mascaraData(e.target.value); });
+  $("sa-f-desde").addEventListener("input", function (e) { e.target.value = mascaraData(e.target.value); });
+  $("sa-corpo").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-acao]");
+    if (!b) return;
+    var id = b.getAttribute("data-id");
+    var acao = b.getAttribute("data-acao");
+    if (acao === "editar") {
+      abrirForm(lista.filter(function (x) { return x.id === id; })[0]);
+    } else if (acao === "senha") {
+      abrirSenha(lista.filter(function (x) { return x.id === id; })[0]);
+    } else {
+      excluir(id);
+    }
+  });
+  $("sa-senha-gerar").addEventListener("click", function () { $("sa-senha-nova").value = gerarSenha(); mostrar($("sa-senha-msg"), ""); });
+  $("sa-senha-fechar").addEventListener("click", fecharSenha);
+  $("sa-senha-salvar").addEventListener("click", salvarSenha);
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (!$("sa-modal").hidden) fecharForm();
+    if (!$("sa-modal-senha").hidden) fecharSenha();
+  });
+
+  // Reaproveita a sessão se o admin já estiver logado
+  sb.auth.getSession().then(function (r) {
+    if (r.data && r.data.session) verificarAdmin(r.data.session);
+  });
+})();
+</script>
+</div>
