@@ -1,0 +1,682 @@
+<!-- =====================================================================
+  ÁREA DO FILIADO
+  Cole este código inteiro em uma PÁGINA do Blogger (modo "Visualização HTML").
+  Edite apenas as duas constantes SUPABASE_URL e SUPABASE_ANON_KEY no final.
+====================================================================== -->
+<div id="sf-root">
+<style>
+#sf-root{--ink:#14213d;--mist:#eef1f6;--line:#d3d9e4;--red:#b3122b;--ok:#17703f;--mute:#5b6677;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.45;max-width:440px;margin:0 auto;box-sizing:border-box}
+#sf-root *{box-sizing:border-box}
+#sf-root [hidden]{display:none!important}
+#sf-root h2{margin:0 0 4px;font-size:1.45rem;font-weight:700;letter-spacing:-.01em}
+#sf-root p{margin:0}
+#sf-root .sf-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px}
+#sf-root .sf-sub{font-size:.9rem;color:var(--mute)}
+#sf-root label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 4px}
+#sf-root input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:4px;font:inherit;background:#fff;color:var(--ink);margin:0}
+#sf-root input:focus,#sf-root button:focus-visible{outline:3px solid #8fa8dd;outline-offset:1px}
+#sf-root button{font:inherit;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:10px 16px;border-radius:4px;font-weight:600}
+#sf-root button:hover{background:#0c1530}
+#sf-root button:disabled{opacity:.6;cursor:wait}
+#sf-root .sf-full{width:100%;margin-top:20px}
+#sf-root .sf-link{background:none;border:0;color:var(--ink);text-decoration:underline;padding:4px 0;font-weight:500;font-size:.88rem}
+#sf-root .sf-link:hover{background:none;color:var(--red)}
+#sf-root .sf-links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}
+#sf-root .sf-msg{margin-top:14px;font-size:.9rem;padding:10px 12px;border-radius:4px}
+#sf-root .sf-msg.err{background:#fbeaed;color:#7d0c1e}
+#sf-root .sf-msg.ok{background:#e4f4ea;color:var(--ok)}
+/* ---- Carteirinha estilo cartão de crédito ---- */
+#sf-root .sf-cc{position:relative;container-type:inline-size;width:100%;aspect-ratio:1.1/1;border-radius:16px;padding:7% 7%;color:#fff;overflow:hidden;margin-top:14px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:radial-gradient(120% 90% at 100% 0%,#2f4f93 0%,rgba(47,79,147,0) 60%),radial-gradient(90% 80% at 0% 100%,#7a0f22 0%,rgba(122,15,34,0) 55%),linear-gradient(135deg,#14213d 0%,#0a1328 100%);
+  box-shadow:0 16px 32px -14px rgba(20,33,61,.7),0 2px 6px rgba(20,33,61,.25)}
+#sf-root .sf-cc::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 2px,rgba(255,255,255,0) 2px 9px)}
+#sf-root .sf-cc>*{position:relative;z-index:1}
+#sf-root .sf-cc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+#sf-root .sf-cc-org{font-size:12px;font-size:3.4cqw;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.2;max-width:68%;margin:0}
+#sf-root .sf-cc-tag{font-size:9px;font-size:2.5cqw;font-weight:600;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:.35em .9em;white-space:nowrap}
+#sf-root .sf-cc-lbl{display:block;font-size:8px;font-size:2.4cqw;font-weight:500;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin:0 0 .3em}
+#sf-root .sf-cc-cpf{display:flex;justify-content:space-between;width:100%;font-family:"OCR A Std","OCR A Extended","Courier New",ui-monospace,monospace;font-size:30px;font-size:9.4cqw;line-height:1.1;font-weight:700;letter-spacing:0;white-space:nowrap;margin:0;
+  text-shadow:0 1px 0 rgba(0,0,0,.5),0 -1px 0 rgba(255,255,255,.12)}
+#sf-root .sf-cc-bot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+#sf-root .sf-cc>.sf-cc-bot{z-index:4}
+#sf-root .sf-cc-qr{display:block;flex:0 0 auto;width:118px;width:36cqw;border-radius:8px;overflow:hidden;line-height:0;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#sf-root .sf-cc-qr img{display:block!important;width:100%!important;height:auto!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+#sf-root .sf-cc-nome{width:100%;font-size:16px;font-size:4.6cqw;font-weight:700;text-transform:uppercase;line-height:1.08;white-space:nowrap;overflow:hidden;margin:0 0 6%;
+  text-shadow:0 1px 0 rgba(0,0,0,.45)}
+#sf-root .sf-cc-nome span{display:inline-block}
+#sf-root .sf-cc-desde{text-align:left;flex:0 0 auto}
+#sf-root .sf-cc-data{font-family:"Courier New",ui-monospace,monospace;font-size:14px;font-size:4.2cqw;font-weight:700;letter-spacing:.04em;margin:0;white-space:nowrap}
+#sf-root .sf-tempo{border-left:4px solid var(--red);padding:4px 0 4px 12px;margin-top:20px}
+#sf-root .sf-tempo span{display:block;font-size:.82rem;color:var(--mute)}
+#sf-root .sf-tempo strong{font-size:1.1rem}
+/* ---- Cartão que vira (frente/verso) ---- */
+#sf-root .sf-flip{position:relative;margin-top:14px;perspective:1400px;cursor:pointer;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;border-radius:16px}
+#sf-root .sf-flip:focus-visible{outline:3px solid #8fa8dd;outline-offset:4px}
+#sf-root .sf-flip-in{position:relative;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,.7,.2,1)}
+#sf-root .sf-flip.virado .sf-flip-in{transform:rotateY(180deg)}
+#sf-root .sf-flip .sf-cc{margin-top:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+#sf-root .sf-cc.sf-verso{position:absolute;inset:0;transform:rotateY(180deg);justify-content:center;align-items:center;gap:5%;text-align:center}
+#sf-root .sf-verso-logo{display:block;width:58%;aspect-ratio:1/1;border-radius:50%;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 4px rgba(255,255,255,.12);pointer-events:none}
+#sf-root .sf-verso-site{margin:0;font-size:11px;font-size:3.2cqw;font-weight:600;letter-spacing:.12em;opacity:.8}
+#sf-root .sf-cc>.sf-marca{position:absolute;z-index:3;inset:-30%;pointer-events:none;transform:rotate(-24deg);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1.6em 2.4em;overflow:hidden;
+  font-size:9px;font-size:2.6cqw;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.075);white-space:nowrap}
+#sf-root .sf-cc{transition:filter .2s}
+#sf-root .sf-flip.oculto .sf-cc{filter:blur(22px) brightness(.6)}
+#sf-root .sf-oculto-msg{display:none;position:absolute;inset:0;z-index:5;align-items:center;justify-content:center;text-align:center;padding:10%;
+  color:#fff;font-weight:700;font-size:1rem;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+#sf-root .sf-flip.oculto .sf-oculto-msg{display:flex}
+#sf-root .sf-dica{margin:10px 0 0;text-align:center;font-size:.85rem;color:var(--mute)}
+#sf-root .sf-print-msg{display:none}
+@media print{
+  #sf-root .sf-flip,#sf-root .sf-dica,#sf-root .sf-tempo{display:none!important}
+  #sf-root .sf-print-msg{display:block;padding:20px;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){#sf-root .sf-flip-in{transition:none}}
+
+/* ---- Botões abaixo do cartão ---- */
+#sf-root .sf-acoes{display:flex;gap:10px;margin-top:16px}
+#sf-root .sf-acoes button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;border-radius:12px;font-size:.95rem}
+#sf-root .sf-acoes svg{display:inline-block!important;flex:0 0 auto;width:18px!important;height:18px!important;min-width:18px;fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round;stroke-linejoin:round;overflow:visible;vertical-align:middle}
+#sf-root .sf-acoes svg *{fill:none!important;stroke:currentColor!important;stroke-width:2!important}
+#sf-root .sf-bt-claro{background:#fff;color:var(--ink);border:1px solid var(--line)}
+#sf-root .sf-bt-claro:hover{background:var(--mist)}
+@media print{#sf-root .sf-acoes{display:none!important}}
+/* ---- Borda luminosa animada ---- */
+#sf-root .sf-flip-in{z-index:1}
+#sf-root .sf-anel{position:absolute;inset:-4px;border-radius:20px;overflow:hidden;z-index:0;pointer-events:none}
+#sf-root .sf-anel::before{content:"";position:absolute;left:50%;top:50%;width:200%;aspect-ratio:1/1;
+  background:conic-gradient(from 0deg,#5ddcff,#3c67e3 22%,#4e00c2 43%,#3c67e3 64%,#5ddcff 86%,#5ddcff);
+  transform:translate(-50%,-50%) rotate(0deg);animation:sf-gira 4s linear infinite;will-change:transform}
+#sf-root .sf-brilho{position:absolute;inset:6% 4% -4%;z-index:0;pointer-events:none;border-radius:24px;
+  background:linear-gradient(120deg,#5ddcff,#3c67e3 43%,#4e00c2);filter:blur(26px);opacity:.55;
+  animation:sf-pulsa 3s ease-in-out infinite alternate;will-change:opacity}
+@keyframes sf-gira{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes sf-pulsa{from{opacity:.35}to{opacity:.7}}
+#sf-root .sf-flip.oculto .sf-anel,#sf-root .sf-flip.oculto .sf-brilho{visibility:hidden}
+@media (prefers-reduced-motion:reduce){#sf-root .sf-anel::before,#sf-root .sf-brilho{animation:none}}
+#sf-root .sf-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
+#sf-root .sf-sec{background:#fff;color:var(--ink);border-color:var(--line);padding:6px 12px;font-size:.85rem}
+#sf-root .sf-sec:hover{background:var(--mist)}
+</style>
+
+<!-- LOGIN / PRIMEIRO ACESSO / RECUPERAR -->
+<section class="sf-card" id="sf-auth">
+  <h2 id="sf-titulo">Área do filiado</h2>
+  <p class="sf-sub" id="sf-sub">Entre com o e-mail cadastrado no sindicato.</p>
+
+  <label for="sf-email">E-mail</label>
+  <input autocomplete="username" id="sf-email" type="email" />
+
+  <div id="sf-bloco-senha">
+    <label for="sf-senha">Senha</label>
+    <input autocomplete="current-password" id="sf-senha" type="password" />
+  </div>
+
+  <button class="sf-full" id="sf-enviar" type="button">Entrar</button>
+  <div class="sf-msg err" hidden="" id="sf-msg"></div>
+
+  <div class="sf-links">
+    <button class="sf-link" id="sf-modo-cad" type="button">Primeiro acesso</button>
+    <button class="sf-link" id="sf-modo-rec" type="button">Esqueci minha senha</button>
+  </div>
+</section>
+
+<!-- DEFINIR NOVA SENHA (após link de recuperação) -->
+<section class="sf-card" hidden="" id="sf-nova">
+  <h2>Nova senha</h2>
+  <p class="sf-sub">Escolha uma senha com pelo menos 8 caracteres.</p>
+  <label for="sf-nova-senha">Nova senha</label>
+  <input autocomplete="new-password" id="sf-nova-senha" type="password" />
+  <button class="sf-full" id="sf-nova-ok" type="button">Salvar nova senha</button>
+  <div class="sf-msg err" hidden="" id="sf-nova-msg"></div>
+</section>
+
+<!-- DADOS DO FILIADO -->
+<section hidden="" id="sf-dados">
+  <div class="sf-head">
+    <h2>Sua carteirinha</h2>
+    <button class="sf-sec" id="sf-sair" type="button">Sair</button>
+  </div>
+  <div class="sf-msg err" hidden="" id="sf-dados-msg"></div>
+  <div hidden="" id="sf-lista">
+    <div aria-label="Carteirinha de filiado. Toque duas vezes para virar." class="sf-flip" id="sf-flip" role="button" tabindex="0">
+    <div aria-hidden="true" class="sf-brilho"></div>
+    <div aria-hidden="true" class="sf-anel"></div>
+    <div class="sf-flip-in">
+    <!-- FRENTE -->
+    <div class="sf-cc sf-frente" id="sf-frente">
+      <div aria-hidden="true" class="sf-marca" id="sf-marca"></div>
+      <div class="sf-cc-top">
+        <p class="sf-cc-org">Sindinova</p>
+        <span class="sf-cc-tag">Filiado</span>
+      </div>
+      <div>
+        <span class="sf-cc-lbl">Titular</span>
+        <p class="sf-cc-nome"><span id="sf-d-nome"></span></p>
+        <span class="sf-cc-lbl">CPF</span>
+        <p class="sf-cc-cpf" id="sf-d-cpf"></p>
+      </div>
+      <div class="sf-cc-bot">
+        <div class="sf-cc-desde">
+          <span class="sf-cc-lbl">Filiado desde</span>
+          <p class="sf-cc-data" id="sf-d-desde"></p>
+        </div>
+        <!-- QR code para https://www.sindinova.org.br (só para escanear, sem link) -->
+        <div class="sf-cc-qr"><img alt="QR code do site www.sindinova.org.br" draggable="false" height="370" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAACTElEQVR42u1by62jQBCsWpB8HCQH4FCGDDYka0NyBkwozgCOlgbVHnoG8560h3dZqa2egwWmTl3qT1UDhZ+c8gs/O4EPfOADH/jAB/5feLYzAtjaNQpJzv2Wc8TTLz5LklYAwCAtADgnSQsGSZIinq7xW8tQ8lbBOVVI697/4xjx/Bj8TuTnCJQJ0BLxcY0fv/+RHyOAVEfmdY/4fAq/SQC2dkVgEAoHMT8ARTy981tooxWA7VqB7VqZ12sr1xFP5/yeMrRMw+mxvmZvxNMbHiZ+8iGNjgOkL5pJkrREPF3ya1x2masFgFGb16aOTSIHv37rM/PjWoVtsidEElBuwrmERzxd4ssEAOlFIEnA4W/cnyTKdAxZEU/H+G1sXpX5G7yo0b1dwp90Pl8Nam3WruoBOB5E/3XsbwBQISBsO43V8nsFgZ0qHGr0X9f5a9NzRVsYrYP66FztJ/SRY36l9c3qsRBMFWfOg1+3ePJWgXJ7sd2SlJ5t3OJ9BThHPD3X59oNjfcu3yo10LI78tcxfhthW/0/JLUc+pcTwDm9Qv+6zt+T15yaHa0ldZF0mJSRvz71UavItvrdx77fh5gXgOZuRTzd8turr8lc9f0+0NbBGGrE0zP+eH+SM3ZaO75bua5AVvRf7/NVf8O5TIN66x2EQhLYLgp95Lg+n882VubHBJUJFLCPKtMQ+8EP4TcvVpVHIq3WmM2Ejni69je6SbnYVwswV9KMD5PDoY8c6982P+s9aTXruXfi4NclnvF9d+ADH/jABz7w/x3/F+bYsNW8I8TnAAAAAElFTkSuQmCC" width="370" /></div>
+      </div>
+    </div>
+    <!-- VERSO -->
+    <div aria-hidden="true" class="sf-cc sf-verso" id="sf-verso">
+      <img alt="Logo do Sindinova" class="sf-verso-logo" draggable="false" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgQ1LXL1_rdwDcaRMXJWc-qic9HeORhJ442x4xlq3sfDx6Qswyo4FaOk46MKGR0ZptzM65NoU1ffuRV30HpXZ29N9eOdVrVmSEABHz-2UVYH6ezsrzJDhNNp_-FvNyTCuhAeCAqfA2R3M6NswIOu9N7ilWny65qi5QVVlGIRH1q-YJJx0YiQLPep7INMLxc/s1600/image.webp" />
+      <p class="sf-verso-site">www.sindinova.org.br</p>
+    </div>
+    </div>
+    <div class="sf-oculto-msg">Carteirinha oculta para proteger seus dados</div>
+    </div>
+    <p class="sf-dica">Toque duas vezes no cartão para virar</p>
+    <p class="sf-print-msg">Por segurança, a carteirinha não pode ser impressa.</p>
+    <div class="sf-tempo"><span>Tempo de filiação</span><strong id="sf-d-tempo"></strong></div>
+    <div class="sf-acoes">
+      <button id="sf-bt-mais" type="button">
+        <svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="12" cy="8" r="3.5"><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"></path></circle></svg>
+        Ver mais dados
+      </button>
+    </div>
+<style>
+/* ===== JANELAS (mais dados / correção) ===== */
+.sf-mod[hidden],.sf-mod [hidden]{display:none!important}
+.sf-mod,.sf-mod *{box-sizing:border-box}
+.sf-mod{position:fixed;inset:0;z-index:99999;display:flex;align-items:flex-start;justify-content:center;padding:24px 14px;overflow-y:auto;
+  background:rgba(6,10,28,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);font-family:"Segoe UI",Roboto,Arial,sans-serif}
+.sf-mod .sf-mod-caixa{position:relative;width:100%;max-width:460px;margin:auto 0;border-radius:22px;overflow:hidden;color:#14213d;background:#fff;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.6);animation:sf-mod-entra .22s ease-out}
+@keyframes sf-mod-entra{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.sf-mod .sf-mod-topo{padding:22px 60px 20px 24px;color:#fff;background:linear-gradient(145deg,#24407c 0%,#14213d 100%)}
+.sf-mod.sf-mod-corr .sf-mod-topo{background:linear-gradient(145deg,#e08a12 0%,#b05e05 100%)}
+.sf-mod .sf-mod-titulo{margin:0;font-size:1.3rem;font-weight:800;line-height:1.15;color:#fff}
+.sf-mod .sf-mod-desc{margin:4px 0 0;font-size:.92rem;opacity:.9;color:#fff}
+.sf-mod .sf-mod-x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;border:0;padding:0;cursor:pointer;
+  background:rgba(255,255,255,.2);color:#fff;font-size:22px;line-height:36px;text-align:center}
+.sf-mod .sf-mod-x:hover{background:rgba(255,255,255,.32)}
+.sf-mod .sf-mod-corpo{padding:18px 24px 24px}
+.sf-mod dl{margin:0}
+.sf-mod .sf-lin{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid #eef1f6}
+.sf-mod .sf-lin:last-child{border-bottom:0}
+.sf-mod dt{margin:0;font-size:.85rem;color:#5b6677;flex:0 0 auto}
+.sf-mod dd{margin:0;font-size:.98rem;font-weight:600;text-align:right;word-break:break-word}
+.sf-mod dd.sf-vazio{font-weight:400;color:#8a94a6;font-style:italic}
+.sf-mod.sf-mod-dados .sf-mod-corpo{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:filter .2s}
+.sf-mod.oculto .sf-mod-corpo{filter:blur(14px)}
+.sf-mod label{display:block;margin:14px 0 6px;font-size:.88rem;font-weight:700;color:#14213d}
+.sf-mod .sf-mod-corpo > label:first-child{margin-top:0}
+.sf-mod input,.sf-mod select,.sf-mod textarea{display:block;width:100%;margin:0;padding:12px 14px;border:1.5px solid #d3d9e4;border-radius:12px;
+  font:inherit;font-size:1rem;color:#14213d;background:#fff;box-shadow:none;-webkit-appearance:none;appearance:none}
+.sf-mod select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2314213d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:18px;padding-right:40px}
+.sf-mod textarea{min-height:84px;resize:vertical}
+.sf-mod input:focus,.sf-mod select:focus,.sf-mod textarea:focus{outline:none;border-color:#e08a12;box-shadow:0 0 0 3px rgba(224,138,18,.22)}
+.sf-mod .sf-opc{font-weight:400;color:#5b6677}
+.sf-mod .sf-mod-erro{margin:14px 0 0;padding:10px 12px;border-radius:10px;font-size:.9rem;background:#fbeaed;color:#7d0c1e}
+.sf-mod .sf-mod-bt{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:18px;padding:14px 18px;border:0;border-radius:14px;
+  cursor:pointer;font:inherit;font-size:1.02rem;font-weight:800;color:#fff;background:linear-gradient(145deg,#e08a12 0%,#b05e05 100%)}
+.sf-mod .sf-mod-bt.sf-zap{background:linear-gradient(145deg,#178a55 0%,#0d5e3a 100%)}
+.sf-mod .sf-mod-bt:hover{filter:brightness(1.08)}
+.sf-mod .sf-mod-bt svg{display:inline-block!important;flex:0 0 auto;width:20px!important;height:20px!important;fill:#fff!important;stroke:none!important}
+.sf-mod .sf-mod-bt svg path{fill:#fff!important;stroke:none!important}
+.sf-mod .sf-mod-nota{margin:10px 0 0;font-size:.82rem;text-align:center;color:#5b6677}
+@media (max-width:420px){.sf-mod .sf-mod-corpo{padding:16px 18px 20px}.sf-mod .sf-lin{flex-direction:column;gap:2px}.sf-mod dd{text-align:left}}
+@media print{.sf-mod{display:none!important}}
+</style>
+
+<!-- ===== JANELA: MAIS DADOS ===== -->
+<div class="sf-mod sf-mod-dados" hidden="" id="sf-mais">
+  <div aria-labelledby="sf-mais-tit" aria-modal="true" class="sf-mod-caixa" role="dialog">
+    <div class="sf-mod-topo">
+      <p class="sf-mod-titulo" id="sf-mais-tit">Seus dados</p>
+      <p class="sf-mod-desc">Confira se está tudo certo.</p>
+      <button aria-label="Fechar" class="sf-mod-x" data-fechar="sf-mais" type="button">×</button>
+    </div>
+    <div class="sf-mod-corpo">
+      <dl id="sf-mais-lista"></dl>
+      <button class="sf-mod-bt" id="sf-bt-corrigir" type="button">Encontrou algum erro? Pedir correção</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JANELA: PEDIR CORREÇÃO ===== -->
+<div class="sf-mod sf-mod-corr" hidden="" id="sf-corr">
+  <div aria-labelledby="sf-corr-tit" aria-modal="true" class="sf-mod-caixa" role="dialog">
+    <div class="sf-mod-topo">
+      <p class="sf-mod-titulo" id="sf-corr-tit">Pedir correção de dados</p>
+      <p class="sf-mod-desc">Preencha e envie pelo WhatsApp do sindicato.</p>
+      <button aria-label="Fechar" class="sf-mod-x" data-fechar="sf-corr" type="button">×</button>
+    </div>
+    <div class="sf-mod-corpo">
+      <label for="sf-corr-nome">Nome do filiado</label>
+      <input autocomplete="name" id="sf-corr-nome" type="text" />
+
+      <label for="sf-corr-campo">Qual dado está errado?</label>
+      <select id="sf-corr-campo">
+        <option value="">Escolha uma opção</option>
+        <option>Nome completo</option>
+        <option>CPF</option>
+        <option>Data de nascimento</option>
+        <option>Data de filiação</option>
+        <option>Telefone</option>
+        <option>Endereço</option>
+        <option>E-mail</option>
+        <option>Outro</option>
+      </select>
+
+      <label for="sf-corr-certo">Qual é o dado correto?</label>
+      <textarea id="sf-corr-certo" placeholder="Escreva como deve ficar"></textarea>
+
+      <label for="sf-corr-obs">Observações <span class="sf-opc">(opcional)</span></label>
+      <textarea id="sf-corr-obs" placeholder="Alguma informação a mais"></textarea>
+
+      <div class="sf-mod-erro" hidden="" id="sf-corr-erro" role="alert"></div>
+
+      <button class="sf-mod-bt sf-zap" id="sf-corr-enviar" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z"></path></svg> Enviar pelo WhatsApp</button>
+      <p class="sf-mod-nota">A correção é feita pela secretaria do sindicato, que pode pedir um documento para confirmar.</p>
+    </div>
+  </div>
+</div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function () {
+  // ====== CONFIGURE AQUI (Supabase > Project Settings > API) ======
+  var SUPABASE_URL = "https://thvmevgwcagwuopvoxum.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRodm1ldmd3Y2Fnd3VvcHZveHVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMTg4NDMsImV4cCI6MjEwNzU5NDg0M30.MNFN5fyoz9XHYmUNPU9ya8u5PdXJvY3g-maKqQB9A5c";
+  // (use somente a chave "anon / public". NUNCA a "service_role")
+  // =================================================================
+
+  var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  var $ = function (id) { return document.getElementById(id); };
+  var modo = "entrar"; // entrar | cadastrar | recuperar
+  var paginaAtual = window.location.href.split("#")[0].split("?")[0];
+
+  // ====== CONFIGURE AQUI: WhatsApp do sindicato (55 + DDD + número, só dígitos) ======
+  var WHATSAPP_SINDICATO = "5569999999999";
+  // ===================================================================================
+  var dadosFiliado = null;
+
+  function mostrar(el, texto, tipo) {
+    el.textContent = texto;
+    el.className = "sf-msg " + (tipo || "err");
+    el.hidden = !texto;
+  }
+  // Mostra só os 3 primeiros e os 2 últimos dígitos: 028.***.***-09
+  function fmtCPF(s) {
+    var d = String(s || "").replace(/\D/g, "");
+    if (d.length !== 11) return "***.***.***-**";
+    return d.slice(0, 3) + ".***.***-" + d.slice(9);
+  }
+  // AAAA-MM-DD (banco) -> dd/mm/aaaa (tela)
+  function fmtData(iso) {
+    if (!iso) return "";
+    var p = iso.split("-");
+    return p[2] + "/" + p[1] + "/" + p[0];
+  }
+  function tempoDeFiliacao(iso) {
+    var p = iso.split("-").map(Number);
+    var h = new Date();
+    var meses = (h.getFullYear() - p[0]) * 12 + (h.getMonth() + 1 - p[1]);
+    if (h.getDate() < p[2]) meses -= 1;
+    if (meses < 1) return "Menos de 1 mês";
+    var a = Math.floor(meses / 12), m = meses % 12, partes = [];
+    if (a) partes.push(a + (a === 1 ? " ano" : " anos"));
+    if (m) partes.push(m + (m === 1 ? " mês" : " meses"));
+    return partes.join(" e ");
+  }
+
+  // Ajusta o nome para ocupar a largura do cartão de ponta a ponta.
+  // Nomes longos: quebra em duas linhas para a letra continuar grande.
+  // Nomes curtos: limita o tamanho e espaça as letras.
+  function ajustarNome() {
+    var el = $("sf-d-nome");
+    var caixa = el.parentElement;
+    var largura = caixa.clientWidth;
+    var nome = (el.getAttribute("data-nome") || "").trim().replace(/\s+/g, " ");
+    if (!largura || !nome) return;
+    el.style.letterSpacing = "0px";
+    el.style.marginRight = "0px";
+    caixa.style.fontSize = "100px";
+    function medir(t) { el.textContent = t; return el.getBoundingClientRect().width; }
+
+    var maximo = largura * 0.12;   // letra máxima (nomes curtos)
+    var minUmaLinha = largura * 0.075; // abaixo disso, usa duas linhas
+    var tam = 100 * largura / medir(nome);
+    var partes = nome.split(" ");
+
+    if (tam < minUmaLinha && partes.length > 1) {
+      // escolhe a quebra que deixa as duas linhas mais equilibradas
+      var melhor = null;
+      for (var i = 1; i < partes.length; i++) {
+        var a = partes.slice(0, i).join(" "), b = partes.slice(i).join(" ");
+        var w = Math.max(medir(a), medir(b));
+        if (!melhor || w < melhor.w) melhor = { a: a, b: b, w: w };
+      }
+      el.textContent = "";
+      el.appendChild(document.createTextNode(melhor.a));
+      el.appendChild(document.createElement("br"));
+      el.appendChild(document.createTextNode(melhor.b));
+      caixa.style.fontSize = Math.max(10, Math.min(100 * largura / melhor.w, maximo)) + "px";
+      return;
+    }
+
+    el.textContent = nome;
+    caixa.style.fontSize = Math.max(10, Math.min(tam, maximo)) + "px";
+    var sobra = largura - el.getBoundingClientRect().width;
+    if (sobra > 1 && nome.length > 1) {
+      var esp = sobra / (nome.length - 1);
+      el.style.letterSpacing = esp + "px";
+      el.style.marginRight = (-esp) + "px";
+    }
+  }
+  window.addEventListener("resize", ajustarNome);
+
+  // ---------- Modos da tela de acesso ----------
+  function definirModo(m) {
+    modo = m;
+    mostrar($("sf-msg"), "");
+    var t = {
+      entrar:    ["Área do filiado", "Entre com o e-mail cadastrado no sindicato.", "Entrar"],
+      cadastrar: ["Primeiro acesso", "Use o mesmo e-mail que você informou ao sindicato e crie uma senha (mínimo 8 caracteres).", "Criar minha senha"],
+      recuperar: ["Recuperar senha", "Informe seu e-mail. Enviaremos um link para criar uma nova senha.", "Enviar link"]
+    }[m];
+    $("sf-titulo").textContent = t[0];
+    $("sf-sub").textContent = t[1];
+    $("sf-enviar").textContent = t[2];
+    $("sf-bloco-senha").hidden = (m === "recuperar");
+    $("sf-senha").autocomplete = (m === "cadastrar") ? "new-password" : "current-password";
+    $("sf-modo-cad").textContent = (m === "entrar") ? "Primeiro acesso" : "Já tenho senha";
+    $("sf-modo-cad").setAttribute("data-vai", (m === "entrar") ? "cadastrar" : "entrar");
+    $("sf-modo-rec").hidden = (m === "recuperar");
+  }
+
+  async function enviar() {
+    var email = $("sf-email").value.trim().toLowerCase();
+    var senha = $("sf-senha").value;
+    var msg = $("sf-msg");
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return mostrar(msg, "Informe um e-mail válido.");
+
+    var btn = $("sf-enviar");
+    btn.disabled = true;
+    mostrar(msg, "");
+
+    if (modo === "entrar") {
+      var r = await sb.auth.signInWithPassword({ email: email, password: senha });
+      btn.disabled = false;
+      if (r.error) {
+        if (/confirm/i.test(r.error.message)) return mostrar(msg, "Confirme seu e-mail pelo link que enviamos antes de entrar.");
+        return mostrar(msg, "E-mail ou senha incorretos.");
+      }
+      $("sf-senha").value = "";
+      mostrarDados();
+
+    } else if (modo === "cadastrar") {
+      if (senha.length < 8) { btn.disabled = false; return mostrar(msg, "A senha precisa ter pelo menos 8 caracteres."); }
+      var c = await sb.auth.signUp({ email: email, password: senha, options: { emailRedirectTo: paginaAtual } });
+      btn.disabled = false;
+      if (c.error) return mostrar(msg, "Não foi possível criar o acesso: " + c.error.message);
+      $("sf-senha").value = "";
+      if (c.data.session) {
+        mostrarDados();
+      } else {
+        definirModo("entrar");
+        mostrar(msg, "Quase lá! Enviamos um link de confirmação para o seu e-mail. Clique nele e depois volte aqui para entrar.", "ok");
+      }
+
+    } else {
+      var rec = await sb.auth.resetPasswordForEmail(email, { redirectTo: paginaAtual });
+      btn.disabled = false;
+      if (rec.error) return mostrar(msg, "Não foi possível enviar o link: " + rec.error.message);
+      mostrar(msg, "Se este e-mail tiver acesso, você receberá o link em instantes.", "ok");
+    }
+  }
+
+  // ---------- Dados do filiado ----------
+  async function mostrarDados() {
+    $("sf-auth").hidden = true;
+    $("sf-nova").hidden = true;
+    $("sf-dados").hidden = false;
+    $("sf-lista").hidden = true;
+    mostrar($("sf-dados-msg"), "");
+
+    var r = await sb.from("filiados")
+      .select("nome_completo,cpf,filiado_desde,data_nascimento,email,telefone,endereco")
+      .maybeSingle();
+
+    if (r.error) return mostrar($("sf-dados-msg"), "Não foi possível carregar seus dados. Tente novamente.");
+    if (!r.data) {
+      return mostrar($("sf-dados-msg"), "Seu e-mail não consta na lista de filiados. Procure a secretaria do sindicato para atualizar seu cadastro.");
+    }
+    $("sf-d-nome").setAttribute("data-nome", r.data.nome_completo);
+    // cada caractere em um <span> para o CPF ocupar o cartão de ponta a ponta
+    var cpfEl = $("sf-d-cpf"), cpfTxt = fmtCPF(r.data.cpf);
+    cpfEl.textContent = "";
+    cpfEl.setAttribute("aria-label", "CPF " + cpfTxt);
+    for (var i = 0; i < cpfTxt.length; i++) {
+      var sp = document.createElement("span");
+      sp.setAttribute("aria-hidden", "true");
+      sp.textContent = cpfTxt[i];
+      cpfEl.appendChild(sp);
+    }
+    $("sf-d-desde").textContent = fmtData(r.data.filiado_desde);
+    $("sf-d-tempo").textContent = tempoDeFiliacao(r.data.filiado_desde);
+    $("sf-lista").hidden = false;
+    ajustarNome();
+    marcaDagua(r.data.nome_completo);
+    dadosFiliado = r.data;
+  }
+
+  async function sair() {
+    fecharJanela(janMais); fecharJanela(janCorr); dadosFiliado = null;
+    await sb.auth.signOut();
+    $("sf-dados").hidden = true;
+    $("sf-auth").hidden = false;
+    definirModo("entrar");
+  }
+
+  async function salvarNovaSenha() {
+    var s = $("sf-nova-senha").value;
+    var msg = $("sf-nova-msg");
+    if (s.length < 8) return mostrar(msg, "A senha precisa ter pelo menos 8 caracteres.");
+    var r = await sb.auth.updateUser({ password: s });
+    if (r.error) return mostrar(msg, "Não foi possível salvar: " + r.error.message);
+    $("sf-nova-senha").value = "";
+    mostrarDados();
+  }
+
+
+  // ---------- Cartão: virar com dois toques/cliques ----------
+  var flip = $("sf-flip");
+  function virar() {
+    var v = flip.classList.toggle("virado");
+    $("sf-frente").setAttribute("aria-hidden", v ? "true" : "false");
+    $("sf-verso").setAttribute("aria-hidden", v ? "false" : "true");
+  }
+  var ultimoToque = 0, ux = 0, uy = 0;
+  flip.addEventListener("pointerup", function (e) {
+    if (e.target.closest && e.target.closest("a")) return;   // o QR code abre o site
+    var agora = Date.now();
+    if (agora - ultimoToque < 350 && Math.abs(e.clientX - ux) < 30 && Math.abs(e.clientY - uy) < 30) {
+      ultimoToque = 0;
+      virar();
+    } else {
+      ultimoToque = agora; ux = e.clientX; uy = e.clientY;
+    }
+  });
+  flip.addEventListener("dblclick", function (e) { e.preventDefault(); });
+  flip.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); virar(); }
+  });
+
+
+  // ---------- Janelas: mais dados / correção ----------
+  var janMais = $("sf-mais"), janCorr = $("sf-corr");
+  document.body.appendChild(janMais);   // fora de qualquer container do tema
+  document.body.appendChild(janCorr);
+  var focoAntes = null;
+  function abrirJanela(j) {
+    if (!focoAntes) focoAntes = document.activeElement;
+    j.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+  }
+  function fecharJanela(j) {
+    j.hidden = true;
+    if (janMais.hidden && janCorr.hidden) {
+      document.documentElement.style.overflow = "";
+      if (focoAntes && focoAntes.focus) focoAntes.focus();
+      focoAntes = null;
+    }
+  }
+  function cpfCompleto(s) {
+    var d = String(s || "").replace(/\D/g, "");
+    return d.length === 11 ? d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4") : d;
+  }
+  function fmtTel(s) {
+    var d = String(s || "").replace(/\D/g, "");
+    if (d.length === 11) return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
+    if (d.length === 10) return "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6);
+    return d;
+  }
+  function abrirMais() {
+    if (!dadosFiliado) return;
+    var f = dadosFiliado;
+    var itens = [
+      ["Nome completo", f.nome_completo],
+      ["CPF", cpfCompleto(f.cpf)],
+      ["Data de nascimento", fmtData(f.data_nascimento)],
+      ["Filiado desde", fmtData(f.filiado_desde)],
+      ["Telefone", fmtTel(f.telefone)],
+      ["Endereço", f.endereco],
+      ["E-mail", f.email]
+    ];
+    var dl = $("sf-mais-lista");
+    dl.textContent = "";
+    itens.forEach(function (it) {
+      var lin = document.createElement("div"); lin.className = "sf-lin";
+      var dt = document.createElement("dt"); dt.textContent = it[0];
+      var dd = document.createElement("dd");
+      if (it[1]) { dd.textContent = it[1]; } else { dd.textContent = "Não informado"; dd.className = "sf-vazio"; }
+      lin.appendChild(dt); lin.appendChild(dd); dl.appendChild(lin);
+    });
+    abrirJanela(janMais);
+  }
+  function abrirCorr() {
+    $("sf-corr-nome").value = dadosFiliado ? dadosFiliado.nome_completo : "";
+    $("sf-corr-campo").value = "";
+    $("sf-corr-certo").value = "";
+    $("sf-corr-obs").value = "";
+    erroCorr("");
+    abrirJanela(janCorr);
+    setTimeout(function () { $("sf-corr-campo").focus(); }, 30);
+  }
+  function erroCorr(t) { var e = $("sf-corr-erro"); e.textContent = t; e.hidden = !t; }
+  function enviarCorr() {
+    var nome = $("sf-corr-nome").value.trim();
+    var campo = $("sf-corr-campo").value;
+    var certo = $("sf-corr-certo").value.trim();
+    var obs = $("sf-corr-obs").value.trim();
+    if (nome.length < 3) return erroCorr("Informe o nome do filiado.");
+    if (!campo) return erroCorr("Escolha qual dado está errado.");
+    if (!certo) return erroCorr("Escreva qual é o dado correto.");
+    erroCorr("");
+    var linhas = [
+      "*Pedido de correção de dados - Sindinova*",
+      "",
+      "*Filiado:* " + nome
+    ];
+    if (dadosFiliado && dadosFiliado.email) linhas.push("*E-mail de acesso:* " + dadosFiliado.email);
+    linhas.push("*Dado a corrigir:* " + campo);
+    linhas.push("*Dado correto:* " + certo);
+    if (obs) linhas.push("*Observações:* " + obs);
+    window.open("https://wa.me/" + WHATSAPP_SINDICATO + "?text=" + encodeURIComponent(linhas.join("\n")), "_blank", "noopener");
+    fecharJanela(janCorr);
+  }
+  $("sf-bt-mais").addEventListener("click", abrirMais);
+  $("sf-bt-corrigir").addEventListener("click", abrirCorr);
+  $("sf-corr-enviar").addEventListener("click", enviarCorr);
+  [janMais, janCorr].forEach(function (j) {
+    j.addEventListener("click", function (e) {
+      if (e.target === j) fecharJanela(j);
+      var x = e.target.closest && e.target.closest("[data-fechar]");
+      if (x) fecharJanela($(x.getAttribute("data-fechar")));
+    });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (!janCorr.hidden) fecharJanela(janCorr); else if (!janMais.hidden) fecharJanela(janMais);
+  });
+  ["contextmenu", "copy"].forEach(function (ev) {
+    janMais.addEventListener(ev, function (e) { e.preventDefault(); });
+  });
+
+  // ---------- Proteção dos dados (dificulta cópia e captura) ----------
+  function marcaDagua(nome) {
+    var d = new Date();
+    var quando = ("0" + d.getDate()).slice(-2) + "/" + ("0" + (d.getMonth() + 1)).slice(-2) + "/" + d.getFullYear() +
+                 " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+    var txt = "Sindinova · " + String(nome || "").split(" ")[0] + " · " + quando;
+    var el = $("sf-marca");
+    el.textContent = "";
+    for (var i = 0; i < 40; i++) {
+      var sp = document.createElement("span");
+      sp.textContent = txt;
+      el.appendChild(sp);
+    }
+  }
+  function ocultar() { flip.classList.add("oculto"); janMais.classList.add("oculto"); }
+  function mostrarCartao() { flip.classList.remove("oculto"); janMais.classList.remove("oculto"); }
+  // sem menu de "salvar/copiar" e sem arrastar
+  ["contextmenu", "dragstart", "selectstart", "copy"].forEach(function (ev) {
+    flip.addEventListener(ev, function (e) { e.preventDefault(); });
+  });
+  // esconde o cartão quando a página perde o foco (troca de app/aba, ferramentas de captura no computador)
+  document.addEventListener("visibilitychange", function () { document.hidden ? ocultar() : mostrarCartao(); });
+  window.addEventListener("blur", ocultar);
+  window.addEventListener("focus", mostrarCartao);
+  // tecla Print Screen no computador
+  document.addEventListener("keyup", function (e) {
+    if (e.key === "PrintScreen") {
+      ocultar();
+      try { navigator.clipboard && navigator.clipboard.writeText(""); } catch (x) {}
+      setTimeout(mostrarCartao, 1500);
+    }
+  });
+  window.addEventListener("beforeprint", ocultar);
+  window.addEventListener("afterprint", mostrarCartao);
+
+  // ---------- Eventos ----------
+  $("sf-enviar").addEventListener("click", enviar);
+  $("sf-senha").addEventListener("keydown", function (e) { if (e.key === "Enter") enviar(); });
+  $("sf-email").addEventListener("keydown", function (e) { if (e.key === "Enter" && modo === "recuperar") enviar(); });
+  $("sf-modo-cad").addEventListener("click", function () { definirModo(this.getAttribute("data-vai") || "cadastrar"); });
+  $("sf-modo-rec").addEventListener("click", function () { definirModo("recuperar"); });
+  $("sf-sair").addEventListener("click", sair);
+  $("sf-nova-ok").addEventListener("click", salvarNovaSenha);
+
+  sb.auth.onAuthStateChange(function (evento) {
+    if (evento === "PASSWORD_RECOVERY") {
+      $("sf-auth").hidden = true;
+      $("sf-dados").hidden = true;
+      $("sf-nova").hidden = false;
+    }
+  });
+
+  definirModo("entrar");
+  sb.auth.getSession().then(function (r) {
+    if (r.data && r.data.session && $("sf-nova").hidden) mostrarDados();
+  });
+})();
+</script>
+</div>
